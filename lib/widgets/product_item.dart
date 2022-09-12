@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/screens/product_details_screen.dart';
 
 import '../provider/product.dart';
+import 'badge.dart';
 
 class ProductItem extends StatelessWidget {
-  // final Product product;
-  // ProductItem(this.product);
+
   @override
   Widget build(BuildContext context) {
     Product product = Provider.of<Product>(context, listen: false);
+    // Cart_Provider cart = Provider.of<Cart_Provider>(context, listen: false);
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
@@ -39,13 +41,34 @@ class ProductItem extends StatelessWidget {
                 },
               );
             }),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () {
-                print("Cart Pressed");
+            trailing: Consumer<Cart_Provider>(
+              builder: (ctx, cart, _) {
+                return cart.indexCount(product.id) == 0
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        onPressed: () {
+                          cart.addToCart(
+                              product.id, product.title, product.price);
+                          print("Cart Pressed");
+                        },
+                      )
+                    : Badge(
+                        value: cart.indexCount(product.id).toString(),
+                        child: IconButton(
+                          onPressed: () {
+                            cart.addToCart(
+                                product.id, product.title, product.price);
+                            print("Cart Pressed");
+                          },
+                          icon: Icon(
+                            Icons.shopping_cart,
+                            color: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      );
               },
             ),
           ),

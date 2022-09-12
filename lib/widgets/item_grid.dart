@@ -4,14 +4,17 @@ import '../provider/products_provider.dart';
 import '../widgets/product_item.dart';
 
 class ItemGrid extends StatelessWidget {
-
+  final _showFavourites;
+  ItemGrid(this._showFavourites);
   @override
   Widget build(BuildContext context) {
 
     //Access data to above registered provider
     final product_provider_object=Provider.of<Product_Provider>(context);
-    final loadedProducts=product_provider_object.list;
-    return GridView.builder(
+    final loadedProducts= _showFavourites ? product_provider_object.favouriteOnlyList : product_provider_object.list;
+    return (_showFavourites && loadedProducts.isEmpty) 
+    ? Center(child : Text("No Favourites \nFound !")) 
+    : GridView.builder(
       padding: EdgeInsets.all(8),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 250,
