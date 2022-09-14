@@ -56,6 +56,7 @@ class ProductItem extends StatelessWidget {
                         },
                       )
                     : Badge(
+                      color: Colors.yellow,
                         value: cart.indexCount(product.id).toString(),
                         child: IconButton(
                           onPressed: () {

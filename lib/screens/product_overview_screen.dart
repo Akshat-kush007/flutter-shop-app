@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/data/dummy_data.dart';
 import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/provider/product.dart';
+import 'package:shop_app/widgets/drawer.dart';
 import 'package:shop_app/widgets/product_item.dart';
 
 import '../provider/products_provider.dart';
 import '../widgets/badge.dart';
 import '../widgets/item_grid.dart';
+import 'cart_screen.dart';
 
 enum Prefrence {
   All,
@@ -38,7 +40,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               );
             },
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routName);
+              },
               icon: Icon(Icons.shopping_cart),
             ),
           ),
@@ -67,6 +71,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                   ])
         ],
       ),
+      drawer: MyDrawer(),
       body: ItemGrid(_showFavourites),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},

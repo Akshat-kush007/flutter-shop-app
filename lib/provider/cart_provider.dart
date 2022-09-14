@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CartItem{
+class CartData{
   final String id;
   final String title;
   final double price;
   int quantity;
 
-  CartItem({
+  CartData({
     required this.id,
     required this.title,
     required this.price,
@@ -15,15 +15,32 @@ class CartItem{
 }
 
 class Cart_Provider with ChangeNotifier{
-  Map<String,CartItem> _items = Map<String,CartItem>();
+  Map<String,CartData> _items = Map<String,CartData>();
 
   int get itemCount {
     return _items.length;
+  }
+  double get totalAmount{
+    double total=0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+     });
+     return total;
+  }
+  Map<String, CartData> get items {
+    return {..._items};
+  }
+  List<String> get keyList{
+    return _items.keys.toList();
+  }
+  List<CartData> get valuesList{
+    return _items.values.toList();
   }
   int indexCount(String id){
     return _items.containsKey(id) ?_items[id]!.quantity : 0;
     notifyListeners();
   }
+  
   void addToCart(String itemId,String itemTitle,double itemPrice){
     if(_items.containsKey(itemId)){
       _items[itemId]?.quantity++;
@@ -31,14 +48,23 @@ class Cart_Provider with ChangeNotifier{
     }else{
       _items.putIfAbsent(
         itemId, 
-        () => CartItem(
+        () => CartData(
           id: DateTime.now().toString(), 
           title: itemTitle, 
           price: itemPrice,
         ),
       );
     }
+    
     notifyListeners();
   }
   
+  void deleteItem(String productId){
+    _items.remove(productId);
+    notifyListeners();
+  }
+  void clean(){
+    _items={};
+    notifyListeners();
+  }
 }
