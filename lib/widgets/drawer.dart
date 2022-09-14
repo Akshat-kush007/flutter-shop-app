@@ -45,10 +45,18 @@ class MyDrawer extends StatelessWidget {
           ],) ,
         ),
         ListTile(
+          title: Text("Shop",style: TextStyle(fontSize: 20),),
+          trailing: Icon(Icons.shop),
+          onTap: (){
+            Navigator.of(context).pushReplacementNamed('/');
+          },
+        ),
+        ListTile(
           title: Text("Orders",style: TextStyle(fontSize: 20),),
           trailing: Icon(Icons.move_up_outlined),
           onTap: (){
-            Navigator.of(context).pushNamed(OrderScreen.routName);
+             
+            Navigator.of(context).pushReplacementNamed(OrderScreen.routName);
           },
         )
         ],

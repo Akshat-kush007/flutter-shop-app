@@ -13,10 +13,10 @@ class ItemGrid extends StatelessWidget {
     final product_provider_object=Provider.of<Product_Provider>(context);
     final loadedProducts= _showFavourites ? product_provider_object.favouriteOnlyList : product_provider_object.list;
     return (_showFavourites && loadedProducts.isEmpty) 
-    ? Center(child : Text("No Favourites \nFound !")) 
+    ? const Center(child : Text("No Favourites \nFound !")) 
     : GridView.builder(
       padding: EdgeInsets.all(8),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 250,
         childAspectRatio: 3/2,
         crossAxisSpacing: 10,

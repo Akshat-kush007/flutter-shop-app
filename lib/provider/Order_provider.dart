@@ -4,7 +4,7 @@ import 'package:shop_app/provider/cart_provider.dart';
 class OrderData{
   String id;
   DateTime dateTime;
-  double total;
+  String total;
   List<CartData> cartItems;
 
   OrderData({
@@ -28,7 +28,7 @@ class Order_Provider with ChangeNotifier{
       cartItems: cartItems, 
       dateTime: DateTime.now(), 
       id: DateTime.now().toString(), 
-      total: total));
+      total: total.toStringAsFixed(2)));
       print(_items);
       notifyListeners();
   }
