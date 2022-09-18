@@ -71,7 +71,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                   ])
         ],
       ),
-      drawer: MyDrawer(),
+      drawer: MyDrawer(Draweritems.shop),
       body: ItemGrid(_showFavourites),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},

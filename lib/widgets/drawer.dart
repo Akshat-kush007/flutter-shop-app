@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/manage_product_screen.dart';
 import 'package:shop_app/screens/order_screen.dart';
 
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+enum Draweritems{
+  shop,
+  order,
+  manage,
+}
 
+
+class MyDrawer extends StatelessWidget {
+  final Draweritems curr;
+  MyDrawer(this.curr);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,9 +40,9 @@ class MyDrawer extends StatelessWidget {
                   label: const Text("Close"),),
               ],
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: const Text("Shop App",
+         const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18),
+            child: Text("Shop App",
                 style: TextStyle(
                   fontSize: 30,
                   fontFamily: 'Roboto',
@@ -45,6 +53,9 @@ class MyDrawer extends StatelessWidget {
           ],) ,
         ),
         ListTile(
+          selected: curr==Draweritems.shop,
+          selectedColor: Theme.of(context).primaryColor,
+           
           title: Text("Shop",style: TextStyle(fontSize: 20),),
           trailing: Icon(Icons.shop),
           onTap: (){
@@ -52,11 +63,21 @@ class MyDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          selected: curr==Draweritems.order,
+          selectedColor: Theme.of(context).primaryColor,
           title: Text("Orders",style: TextStyle(fontSize: 20),),
           trailing: Icon(Icons.move_up_outlined),
           onTap: (){
-             
             Navigator.of(context).pushReplacementNamed(OrderScreen.routName);
+          },
+        ),
+        ListTile(
+          selected: curr==Draweritems.manage,
+          selectedColor: Theme.of(context).primaryColor,
+          title: Text("Manage Product",style: TextStyle(fontSize: 20),),
+          trailing: Icon(Icons.edit),
+          onTap: (){ 
+            Navigator.of(context).pushReplacementNamed(ManageProductScreen.routName);
           },
         )
         ],

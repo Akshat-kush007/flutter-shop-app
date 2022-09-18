@@ -43,21 +43,31 @@ class Product_Provider with ChangeNotifier{
   List<Product> get list{
     return [..._priveteList];
   }
-
+  int get productCount{
+    return _priveteList.length;
+  }
   List<Product> get favouriteOnlyList{
     return _priveteList.where((element) => element.favourite).toList();
   }
   //Methods to update this provider
-  void addProduct(){
-    //-------type here--------
+  void addProduct(Product product){
+    if(_priveteList.any((element) => element.id==product.id)){
+      int index=_priveteList.indexWhere((element) => element.id==product.id);
+      _priveteList[index]=product;
+    }else{
+    _priveteList.add(product);
+    }
 
 
     // this will notify instance on execution of this method,
     //so if data changes it will rebuild
     notifyListeners();
   }
-
   Product findById(String Id){
     return _priveteList.firstWhere((element) => element.id==Id);
+  }
+  void deleteProduct(String id){
+    _priveteList.removeWhere((element) => element.id==id);
+    notifyListeners();
   }
 }

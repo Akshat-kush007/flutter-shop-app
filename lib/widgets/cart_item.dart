@@ -20,6 +20,25 @@ class CartItem extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 8,vertical: 8),
         child: Icon(Icons.delete,color: Colors.white,),
         ),
+      confirmDismiss: ((direction) {
+        return showDialog(
+          context: context, 
+          builder: (ctx){
+            return AlertDialog(
+              title:const Text("Are you sure?"),
+              content:const Text("Do you want to delete the cart item?"),
+              actions: [
+                TextButton(onPressed: (){
+                  Navigator.of(ctx).pop(true);
+                }, child:const Text("Yes")),
+                TextButton(onPressed: (){
+                  Navigator.of(ctx).pop(false);
+                }, child:const Text("No"))
+              ],
+            );
+          }
+          );
+      }),
       onDismissed: (direction){
         Provider.of<Cart_Provider>(context, listen: false).deleteItem(productId);
       },

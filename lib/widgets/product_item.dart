@@ -7,7 +7,6 @@ import '../provider/product.dart';
 import 'badge.dart';
 
 class ProductItem extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     Product product = Provider.of<Product>(context, listen: false);
@@ -44,30 +43,18 @@ class ProductItem extends StatelessWidget {
             trailing: Consumer<Cart_Provider>(
               builder: (ctx, cart, _) {
                 return cart.indexCount(product.id) == 0
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.shopping_cart,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        onPressed: () {
-                          cart.addToCart(
-                              product.id, product.title, product.price);
-                          print("Cart Pressed");
-                        },
+                    ? cartButton(
+                        cart,
+                        product,
+                        context,
                       )
                     : Badge(
-                      color: Colors.yellow,
+                        color: Colors.yellow,
                         value: cart.indexCount(product.id).toString(),
-                        child: IconButton(
-                          onPressed: () {
-                            cart.addToCart(
-                                product.id, product.title, product.price);
-                            print("Cart Pressed");
-                          },
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            color: Theme.of(context).accentColor,
-                          ),
+                        child: cartButton(
+                          cart,
+                          product,
+                          context,
                         ),
                       );
               },
@@ -78,6 +65,34 @@ class ProductItem extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+      ),
+    );
+  }
+
+  IconButton cartButton(
+      Cart_Provider cart, Product product, BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        cart.addToCart(product.id, product.title, product.price);
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text("Item added to Cart"),
+              duration: Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(6),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              action: SnackBarAction(
+                  onPressed: () {
+                    cart.removeItemQuantity(product.id);
+                  },
+                  label: "UNDO")),
+        );
+        print("Cart Pressed");
+      },
+      icon: Icon(
+        Icons.shopping_cart,
+        color: Theme.of(context).accentColor,
       ),
     );
   }

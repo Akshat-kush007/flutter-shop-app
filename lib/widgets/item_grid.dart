@@ -17,7 +17,7 @@ class ItemGrid extends StatelessWidget {
     : GridView.builder(
       padding: EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 250,
+        maxCrossAxisExtent: 350,
         childAspectRatio: 3/2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,        

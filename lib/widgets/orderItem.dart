@@ -14,6 +14,7 @@ class OrderItem extends StatefulWidget {
 
 class _OrderItemsState extends State<OrderItem> {
   bool _expands = false;
+  
   @override
   Widget build(BuildContext context) {
     return Card(
