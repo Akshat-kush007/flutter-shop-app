@@ -17,13 +17,47 @@ enum Prefrence {
 }
 
 class ProductOverviewScreen extends StatefulWidget {
-  ProductOverviewScreen({Key? key}) : super(key: key);
+  static const routeName="/product-overview";
 
   @override
   State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
 }
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
+  bool isLoading=true;
+  @override
+  void initState() {
+    //fetching product in product_provider
+     
+  
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+      Provider.of<Product_Provider>(context,listen: false)
+     .featchAndSetProducts()
+     .then((_) {
+      
+     })
+     .catchError((err){
+        return showDialog(
+          context: context, 
+          builder:((context) {
+            return AlertDialog(
+              title: Text("Error !"),
+              content: Text(err.toString()),
+              actions: [TextButton(onPressed: (){Navigator.of(context).pop();}, child: Text("Okay"))],
+            );
+          }) 
+        );
+     }).whenComplete((){
+        setState(() {
+        isLoading=false;
+      });
+     });
+    super.didChangeDependencies();
+  }
+
   @override
   bool _showFavourites = false;
   Widget build(BuildContext context) {
@@ -72,7 +106,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         ],
       ),
       drawer: MyDrawer(Draweritems.shop),
-      body: ItemGrid(_showFavourites),
+      body: isLoading 
+      ? Center(child: CircularProgressIndicator(),)
+      : ItemGrid(_showFavourites),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
       //   child: Icon(Icons.add),

@@ -35,7 +35,15 @@ class ProductItem extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ),
                 onPressed: () {
-                  product.toggleFavourite();
+                  product.toggleFavourite(product.id)
+                  .catchError((err){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Could Not able to Favourite"),
+                          duration: Duration(seconds: 3),
+                          )
+                      );
+                  });
                   print("Favourite Pressed");
                 },
               );
