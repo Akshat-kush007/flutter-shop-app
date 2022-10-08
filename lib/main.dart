@@ -7,6 +7,7 @@ import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/manage_product_screen.dart';
 import 'package:shop_app/screens/order_screen.dart';
+import 'package:shop_app/screens/splash_screen.dart';
 import '../provider/cart_provider.dart';
 import '../provider/products_provider.dart';
 import '../screens/product_details_screen.dart';
@@ -37,22 +38,32 @@ class MyApp extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
+    print("Build main\n\n");
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (ctx) => Product_Provider(),
+            create: (ctx) => auth_Provider(),
           ),
+          ChangeNotifierProxyProvider<auth_Provider, Product_Provider>(
+              create: (_) => Product_Provider(),
+              update: (_, auth, products) {
+                products!.authToken = auth.Token;
+                products.userId = auth.UserId;
+                return products;
+              }),
           ChangeNotifierProvider(
             create: (ctx) => Cart_Provider(),
           ),
-          ChangeNotifierProvider(
-            create: (ctx) => Order_Provider(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => auth_Provider(),
-          ),
+          ChangeNotifierProxyProvider<auth_Provider, Order_Provider>(
+              create: (_) => Order_Provider(),
+              update: (_, auth, orders) {
+                orders!.authToken = auth.Token;
+                orders.userId = auth.UserId;
+                return orders;
+              }),
         ],
         child: Consumer<auth_Provider>(
+          
           builder: ((context, authObject, child) => MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Shop App',
@@ -61,9 +72,21 @@ class MyApp extends StatelessWidget {
                     accentColor: Colors.lightGreenAccent,
                     canvasColor: Colors.grey[300],
                     fontFamily: 'Lato'),
-                home: authObject.auth 
-                ? ProductOverviewScreen()
-                : AuthScreen(),
+
+
+                home: authObject.auth
+                    ? ProductOverviewScreen()
+                    : FutureBuilder(
+                        future: authObject.tryAutoLogIn(),
+                        builder: ((context, snapshot) {
+                          return snapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? SplashScreen()
+                              : AuthScreen();
+                        }),
+                      ),
+
+                      
                 routes: {
                   AuthScreen.routeName: (ctx) => AuthScreen(),
                   ProductOverviewScreen.routeName: (ctx) =>

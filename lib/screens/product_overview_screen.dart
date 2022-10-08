@@ -28,13 +28,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   @override
   void initState() {
     //fetching product in product_provider
-     
-  
-    super.initState();
-  }
-  @override
-  void didChangeDependencies() {
-      Provider.of<Product_Provider>(context,listen: false)
+     Provider.of<Product_Provider>(context,listen: false)
      .featchAndSetProducts()
      .then((_) {
       
@@ -44,7 +38,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           context: context, 
           builder:((context) {
             return AlertDialog(
-              title: Text("Error !"),
+              title: Text("This Error !"),
               content: Text(err.toString()),
               actions: [TextButton(onPressed: (){Navigator.of(context).pop();}, child: Text("Okay"))],
             );
@@ -55,6 +49,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         isLoading=false;
       });
      });
+  
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+      
     super.didChangeDependencies();
   }
 

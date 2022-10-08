@@ -30,12 +30,22 @@ class Order_Provider with ChangeNotifier {
     return _items.length;
   }
 
+  String? _authToken;
+  String? _userId;
+ 
+  set authToken(String? value) {
+  _authToken = value;
+  }
+  set userId(String? value) {
+    _userId = value;
+  }
   Future fetchAndSetOrders() {
+    // print(_authToken);
     final List<OrderData> loadedOrders = [];
    final url = Uri.parse(
-        "https://shop-app-53863-default-rtdb.firebaseio.com/orders.json");
+        "https://shop-app-53863-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
     return http.get(url).then((responce) {
-      print(jsonDecode(responce.body));
+      // print(jsonDecode(responce.body));
       final eMap = jsonDecode(responce.body) as Map<String, dynamic>;
      
       if (eMap == null) {
@@ -74,11 +84,12 @@ class Order_Provider with ChangeNotifier {
   Future addOrder(List<CartData> cartItems, double total) {
     final time = DateTime.now();
     final url = Uri.parse(
-        "https://shop-app-53863-default-rtdb.firebaseio.com/orders.json");
+        "https://shop-app-53863-default-rtdb.firebaseio.com/orders/$_userId.json?auth=$_authToken");
 
     return http
         .post(url,
             body: jsonEncode({
+
               'dateTime': time.toIso8601String(),
               'total': total.toStringAsFixed(2),
               'cartItem': cartItems.map((each) {

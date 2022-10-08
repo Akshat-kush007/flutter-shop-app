@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/provider/auth_provider.dart';
 import 'package:shop_app/screens/manage_product_screen.dart';
 import 'package:shop_app/screens/order_screen.dart';
 
@@ -78,6 +80,19 @@ class MyDrawer extends StatelessWidget {
           trailing: Icon(Icons.edit),
           onTap: (){ 
             Navigator.of(context).pushReplacementNamed(ManageProductScreen.routName);
+          },
+        )
+        ,
+        ListTile(
+          selected: curr==Draweritems.manage,
+          selectedColor: Theme.of(context).primaryColor,
+          title: Text("Logout",style: TextStyle(fontSize: 20),),
+          trailing: Icon(Icons.logout),
+          onTap: (){ 
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed('/');
+
+            Provider.of<auth_Provider>(context,listen: false).logOut();
           },
         )
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/provider/auth_provider.dart';
 import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/screens/product_details_screen.dart';
 
@@ -10,6 +11,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Product product = Provider.of<Product>(context, listen: false);
+    final authData= Provider.of<auth_Provider>(context,listen: false);
     // Cart_Provider cart = Provider.of<Cart_Provider>(context, listen: false);
     return GestureDetector(
       onTap: () {
@@ -35,7 +37,7 @@ class ProductItem extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ),
                 onPressed: () {
-                  product.toggleFavourite(product.id)
+                  product.toggleFavourite(product.id,authData.Token!,authData.UserId!)
                   .catchError((err){
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

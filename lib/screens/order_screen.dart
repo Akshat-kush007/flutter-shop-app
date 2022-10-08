@@ -8,7 +8,7 @@ class OrderScreen extends StatelessWidget {
   static const routName = '/order-screen';
   @override
   Widget build(BuildContext context) {
-    print("Building Widget!!");
+    
     return Scaffold(
         appBar: AppBar(title: Text("Orders")),
         drawer: MyDrawer(Draweritems.order),

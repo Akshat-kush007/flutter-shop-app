@@ -13,6 +13,7 @@ class Product with ChangeNotifier {
   final String imageUrl;
   final double price;
   bool favourite;
+  
 
   Product({
     required this.id,
@@ -23,15 +24,16 @@ class Product with ChangeNotifier {
     this.favourite = false,
   });
 
-  Future toggleFavourite(String id) async {
+
+Future toggleFavourite(String id,String token,String userId) async {
     final url = Uri.parse(
-        "https://shop-app-53863-default-rtdb.firebaseio.com/products/$id.json");
+        "https://shop-app-53863-default-rtdb.firebaseio.com/userFavourite/$userId/$id.json?auth=$token");
     favourite = !favourite;
     notifyListeners();
 
     try {
       Response res =
-          await http.patch(url, body: jsonEncode({'favourite': favourite}));
+          await http.put(url, body: jsonEncode(favourite));
       //Error dectaction for patch request -> throw a custom ERROR!!
       if (res.statusCode >= 400) {
         print("ERROR");

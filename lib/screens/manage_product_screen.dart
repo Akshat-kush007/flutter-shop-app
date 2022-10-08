@@ -6,34 +6,51 @@ import 'package:shop_app/widgets/drawer.dart';
 import 'package:shop_app/widgets/manageProduct_item.dart';
 
 class ManageProductScreen extends StatelessWidget {
-  static const routName='/manage-product';
+  static const routName = '/manage-product';
 
-  _refresh(BuildContext context) async{
-    await Provider.of<Product_Provider>(context,listen: false).refreshProducts();
+  Future _refresh(BuildContext context) async {
+    return await Provider.of<Product_Provider>(context, listen: false)
+        .refreshProducts(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final products_provider_object=Provider.of<Product_Provider>(context);
-    final products=products_provider_object.list;
+    // final products_provider_object=Provider.of<Product_Provider>(context);
+    // final products=products_provider_object.list;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Manage Product"),
-          actions: [
-            IconButton(onPressed: (){
-              Navigator.of(context).pushNamed(AddEditProductScreen.routName);
-            }, icon: const Icon(Icons.add))
-          ],
-        ),
-      drawer: MyDrawer(Draweritems.manage),
-      body: RefreshIndicator(
-        onRefresh: () =>_refresh(context),
-        child: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (ctx,index){
-            return ManageProductItem(products[index]);
-        }),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _refresh(context);
+              },
+              icon: const Icon(Icons.loop_outlined)),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddEditProductScreen.routName);
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
+      drawer: MyDrawer(Draweritems.manage),
+      body: FutureBuilder(
+          future: _refresh(context),
+          builder: ((context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () => _refresh(context),
+                    child: Consumer<Product_Provider>(
+                      builder: (context, products, child) {
+                        return ListView.builder(
+                            itemCount: products.list.length,
+                            itemBuilder: (ctx, index) {
+                              return ManageProductItem(products.list[index]);
+                            });
+                      },
+                    ));
+          })),
     );
   }
 }
