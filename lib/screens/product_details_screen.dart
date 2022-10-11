@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/data/dummy_data.dart';
@@ -23,39 +21,57 @@ class ProductDetailsScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     setProduct(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(product.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 14,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      product.imageUrl,
-                      height: size.height * 0.35,
-                      width: size.width,
-                      fit: BoxFit.cover,
-                    ),
+        // appBar: AppBar(
+        //   title: Text(product.title),
+        // ),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: size.height * 0.35,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(product.title),
+                background: Hero(
+                  tag: product.id,
+                  child: Image.network(
+                    product.imageUrl,
+                    height: size.height * 0.35,
+                    width: size.width,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+            ),
+            SliverList(
+                delegate: SliverChildListDelegate([
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Card(child:Container(width: size.width,
-                  child: Text(product.description,style: TextStyle(fontSize: 16),softWrap: true,)),),
+                child: Card(
+                  child: Container(
+                      width: size.width,
+                      child: Text(
+                        product.description,
+                        style: TextStyle(fontSize: 16),
+                        softWrap: true,
+                      )),
                 ),
-                SizedBox(height: 10,),
-                Chip(label: Text("\$${product.price}",style: TextStyle(color: Colors.lightGreen,fontSize: 20,fontWeight: FontWeight.bold),),backgroundColor: Colors.white,)
-
-            ],
-          ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Chip(
+                label: Text(
+                  "\$${product.price}",
+                  style: TextStyle(
+                      color: Colors.lightGreen,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                backgroundColor: Colors.white,
+              ),
+              SizedBox(height: 800,)
+            ]))
+          ],
         ));
   }
 }

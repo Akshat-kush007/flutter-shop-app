@@ -70,9 +70,15 @@ class ProductItem extends StatelessWidget {
               },
             ),
           ),
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+          child:Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/loading.png'),
+              image: NetworkImage(
+                product.imageUrl,
+              ),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
