@@ -8,6 +8,8 @@ It is a **Firebase-Realtime Databse** based **Flutter** application.
 This Project is a demonstration of **State-Management**, **Firebase-Realtime-Databse** storage,
 **Local-Storage**, and various UI and Futures functionality.
 
+![Alt Text](https://github.com/Akshat-kush007/Web-D-BackUp/blob/main/Assets/gifs/shop.gif)<br><br>
+
 ## State-Management
 > **provider: ^6.0.3** package is used for state-managemenet
  
